@@ -15,14 +15,34 @@ var reverseXAxis = false; //反转x轴
 var reverseYAxis = false; //反转y轴
 var camHeightClamp = 50; //限制摄像机y轴高度
 
-function SetTarget(target, camera) {
+function SetTargetCamera(target, camera) {
     this.cameraTarget = target;
     this.cameraObject = camera;
     update();
 }
+function SetTarget(target){
+    this.cameraTarget = target;
+}
 //线性差值
 function lerp(p0, p1, value) {
     return (1 - value) * p0 + value * p1;
+}
+
+function Raycast() {
+    let mouse = new THREE.Vector2(0, 0);
+    mouse.x = (startX / 1280) * 2 - 1;
+    mouse.y = -(startY / 768) * 2 + 1;
+    let raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, cameraObject);
+    var intersects = raycaster.intersectObjects(scene.children);
+    if (intersects.length > 0) {
+        //console.log(intersects[0].object);
+        intersects[0].object.material=new THREE.MeshPhongMaterial({
+            color:0xffffff*Math.random(),
+            side:THREE.DoubleSide
+        });
+        SetTarget(intersects[0].object);
+    }
 }
 
 function update() {
@@ -38,13 +58,14 @@ function update() {
     targetPosition = cameraTarget.position;
     oldMouseRotation = mouseRotationDistance;
 
-    followDistance -= mouseScrollDistance / 800;
-    followDistance = THREE.Math.clamp(followDistance, 1, 100);
+    followDistance -= mouseScrollDistance / 8;
+    followDistance = THREE.Math.clamp(followDistance, 1, 1000);
     followTgtDistance = lerp(followTgtDistance, followDistance, 0.1);
 
     if (orbitView) { //按下鼠标左键
         camRotation = lerp(oldMouseRotation, mouseRotationDistance, 0.2) / 10;
         camHeight = lerp(camHeight, camHeight + mouseVerticalDistance, 0.02);
+
     }
     camHeight = THREE.Math.clamp(camHeight, -camHeightClamp, camHeightClamp);
 

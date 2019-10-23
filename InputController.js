@@ -9,6 +9,7 @@ var inputMouseKeyDown2 = false;
 var inputMouseX = 0;
 var inputMouseY = 0;
 var inputMouseWheel = 0;
+var inputPoint = new THREE.Vector2(0, 0);
 
 var startX, startY;
 
@@ -34,8 +35,10 @@ function MouseDown(event) {
     if (event.buttons == 4) {
         inputMouseKey2 = true;
         inputMouseKeyDown2 = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        inputPoint = new THREE.Vector2(startX, startY);
     }
-
 }
 
 function MouseUp(event) {
@@ -86,9 +89,23 @@ function StopWheel() {
         inputMouseWheel = 0;
     }
 }
+
+function DoubleClick(event) {
+    //console.log("双击");
+    startX = event.clientX;
+    startY = event.clientY;
+    inputPoint = new THREE.Vector2(startX, startY);
+    Raycast();
+}
+
+function Click() {
+    //console.log('单击');
+}
 window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 window.addEventListener('mousedown', MouseDown);
 window.addEventListener('mouseup', MouseUp);
 window.addEventListener('mousemove', MouseMove);
 window.addEventListener('mousewheel', MouseWheel);
+window.addEventListener('dblclick', DoubleClick);
+window.addEventListener('click', Click);
