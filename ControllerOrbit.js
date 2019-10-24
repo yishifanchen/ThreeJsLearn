@@ -58,13 +58,13 @@ function update() {
     targetPosition = cameraTarget.position;
     oldMouseRotation = mouseRotationDistance;
 
-    followDistance -= mouseScrollDistance / 8;
-    followDistance = THREE.Math.clamp(followDistance, 1, 1000);
-    followTgtDistance = lerp(followTgtDistance, followDistance, 0.1);
+    followDistance -= mouseScrollDistance/80;
+    followDistance = THREE.Math.clamp(followDistance, 1, 100);
+    followTgtDistance = lerp(followTgtDistance, followDistance, 0.02);
 
     if (orbitView) { //按下鼠标左键
         camRotation = lerp(oldMouseRotation, mouseRotationDistance, 0.2) / 10;
-        camHeight = lerp(camHeight, camHeight + mouseVerticalDistance, 0.02);
+        camHeight = lerp(camHeight, camHeight + mouseVerticalDistance, 0.1);
 
     }
     camHeight = THREE.Math.clamp(camHeight, -camHeightClamp, camHeightClamp);

@@ -22,8 +22,8 @@ function init() {
     pointLight.position.set(5,5,0);
     scene.add(pointLight);
 
-    camera = new THREE.PerspectiveCamera(60, 1280 / 768, 0.1, 10000);
-    camera.position.set(0, 0, 100);
+    camera = new THREE.PerspectiveCamera(60, 1280 / 768, 0.1, 1000);
+    camera.position.set(4759, 29170, -75745);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     renderer = new THREE.WebGLRenderer({
@@ -44,6 +44,7 @@ function init() {
         color: 0xff77ff
     }));
     mesh1.position.set(0,0,0);
+    mesh1.scale.set(1,1,1);
     mesh1.name="box";
     mesh1.castShadow=true;
     mesh1.receiveShadow=true;
