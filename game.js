@@ -61,11 +61,11 @@ function init() {
     meshFloor.name="plane";
     meshFloor.castShadow=true;
     meshFloor.receiveShadow = true;
-    scene.add(meshFloor);
+    //scene.add(meshFloor);
 
     scene.add(camera);
     scene.add(mesh);
-    scene.add(mesh1);
+    //scene.add(mesh1);
 
     SetTargetCamera(mesh1,camera);
 

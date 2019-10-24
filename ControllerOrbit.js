@@ -5,7 +5,7 @@ var targetRotation = new THREE.Euler(0, 0, 0); //目标旋转
 var mouseRotationDistance = 0;
 var mouseVerticalDistance = 0;
 var mouseScrollDistance = 0;
-var followDistance = 0;
+var followDistance = 100;
 var followTgtDistance = 0;
 var oldMouseRotation = 0;
 var camRotation = 0;
@@ -14,9 +14,10 @@ var orbitView = false; //操作视角
 var reverseXAxis = false; //反转x轴
 var reverseYAxis = false; //反转y轴
 var camHeightClamp = 50; //限制摄像机y轴高度
+var originVector=new THREE.Vector3(0,0,0);
 
 function SetTargetCamera(target, camera) {
-    this.cameraTarget = target;
+    this.cameraTarget = target.position;
     this.cameraObject = camera;
     update();
 }
@@ -41,7 +42,9 @@ function Raycast() {
             color:0xffffff*Math.random(),
             side:THREE.DoubleSide
         });
-        SetTarget(intersects[0].object);
+        SetTarget(intersects[0].point);
+    }else{
+        SetTarget(originVector);
     }
 }
 
@@ -55,12 +58,12 @@ function update() {
     if (reverseXAxis) mouseRotationDistance = -inputMouseX; //移动鼠标x轴反向
     if (reverseYAxis) mouseVerticalDistance = -inputMouseY; //移动鼠标Y轴反向
 
-    targetPosition = cameraTarget.position;
+    targetPosition = cameraTarget;
     oldMouseRotation = mouseRotationDistance;
 
-    followDistance -= mouseScrollDistance/80;
+    followDistance -= mouseScrollDistance/120;
     followDistance = THREE.Math.clamp(followDistance, 1, 100);
-    followTgtDistance = lerp(followTgtDistance, followDistance, 0.02);
+    followTgtDistance = lerp(followTgtDistance, followDistance, 0.08);
 
     if (orbitView) { //按下鼠标左键
         camRotation = lerp(oldMouseRotation, mouseRotationDistance, 0.2) / 10;
@@ -80,9 +83,9 @@ function update() {
         cameraObject.rotation.z
     );
     cameraObject.position.set(
-        cameraTarget.position.x + (Math.cos(cameraObject.rotation.y) * followTgtDistance),
-        lerp(camHeight, cameraTarget.position.y - Math.abs(Math.sin(cameraObject.rotation.x) * followTgtDistance), 0.02),
-        cameraTarget.position.z + (Math.sin(cameraObject.rotation.y) * followTgtDistance)
+        cameraTarget.x + (Math.cos(cameraObject.rotation.y) * followTgtDistance),
+        lerp(camHeight, cameraTarget.y - Math.abs(Math.sin(cameraObject.rotation.x) * followTgtDistance), 0.02),
+        cameraTarget.z + (Math.sin(cameraObject.rotation.y) * followTgtDistance)
     );
     cameraObject.lookAt(targetPosition);
 }
