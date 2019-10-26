@@ -6,8 +6,11 @@ var camera;
 var renderer;
 var mesh;
 var pointLight;
+var useWidth,useHeight;
 
 function init() {
+    useWidth=1280;
+    useHeight=768;
     scene = new THREE.Scene();
 
     ambientLight = new THREE.AmbientLight(0xfff33f, 0.2);
@@ -22,7 +25,7 @@ function init() {
     pointLight.position.set(5,5,0);
     scene.add(pointLight);
 
-    camera = new THREE.PerspectiveCamera(60, 1280 / 768, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(60, useWidth / useHeight, 0.1, 1000);
     camera.position.set(4759, 29170, -75745);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -71,14 +74,17 @@ function init() {
 
     loadJS("model/丁堡河大桥2.rvt.js");
 
-    renderer.setSize(1280,768);
+    renderer.setSize(useWidth,useHeight);
     renderer.setClearColor(0x2E9AFE,0.5);
-    renderer.render(scene, camera);
+    //renderer.render(scene, camera);
     document.body.appendChild(renderer.domElement);
+    OutLineInit();
     animate();
+    
 }
 function animate(){
     requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+    //renderer.render(scene, camera);
+    composer.render();
 }
 window.onload = init;

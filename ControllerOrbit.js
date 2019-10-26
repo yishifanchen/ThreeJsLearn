@@ -14,14 +14,18 @@ var orbitView = false; //操作视角
 var reverseXAxis = false; //反转x轴
 var reverseYAxis = false; //反转y轴
 var camHeightClamp = 50; //限制摄像机y轴高度
-var originVector=new THREE.Vector3(0,0,0);
+var originVector = new THREE.Vector3(0, 0, 0);
+var intersects;
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2(0, 0);
 
 function SetTargetCamera(target, camera) {
     this.cameraTarget = target.position;
     this.cameraObject = camera;
     update();
 }
-function SetTarget(target){
+
+function SetTarget(target) {
     this.cameraTarget = target;
 }
 //线性差值
@@ -30,25 +34,34 @@ function lerp(p0, p1, value) {
 }
 
 function Raycast() {
-    let mouse = new THREE.Vector2(0, 0);
-    mouse.x = (startX / 1280) * 2 - 1;
-    mouse.y = -(startY / 768) * 2 + 1;
-    let raycaster = new THREE.Raycaster();
+    mouse.x = (startX / useWidth) * 2 - 1;
+    mouse.y = -(startY / useHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, cameraObject);
-    var intersects = raycaster.intersectObjects(scene.children);
+    intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
-        //console.log(intersects[0].object);
-        intersects[0].object.material=new THREE.MeshPhongMaterial({
-            color:0xffffff*Math.random(),
-            side:THREE.DoubleSide
+        outlinePass.selectedObjects = intersects[0].object;
+        // intersects[0].object.material = new THREE.MeshPhongMaterial({
+        //     color: 0xffffff * Math.random(),
+        //     side: THREE.DoubleSide
+        // });
+    }
+}
+
+function RaycastDblClick() {
+    if (intersects.length > 0) {
+        intersects[0].object.material = new THREE.MeshPhongMaterial({
+            color: 0xffffff * Math.random(),
+            side: THREE.DoubleSide
         });
+        console.log(intersects[0].object.name);
         SetTarget(intersects[0].point);
-    }else{
+    } else {
         SetTarget(originVector);
     }
 }
 
 function update() {
+    Raycast();
     requestAnimationFrame(update);
 
     orbitView = inputMouseKey0; //按下鼠标左键
@@ -61,7 +74,7 @@ function update() {
     targetPosition = cameraTarget;
     oldMouseRotation = mouseRotationDistance;
 
-    followDistance -= mouseScrollDistance/120;
+    followDistance -= mouseScrollDistance / 120;
     followDistance = THREE.Math.clamp(followDistance, 1, 100);
     followTgtDistance = lerp(followTgtDistance, followDistance, 0.08);
 

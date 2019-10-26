@@ -55,16 +55,18 @@ function MouseUp(event) {
 }
 
 function MouseMove(event) {
+
+    let endX = event.clientX;
+    let endY = event.clientY;
+    var x = endX - startX;
+    var y = endY - startY;
     if (inputMouseKey0) {
-        let endX = event.clientX;
-        let endY = event.clientY;
-        var x = endX - startX;
-        var y = endY - startY;
         inputMouseX = x;
         inputMouseY = y;
-        startX = endX;
-        startY = endY;
     }
+    startX = endX;
+    startY = endY;
+
 }
 var moveWheel = true,
     stopWheel = false,
@@ -95,7 +97,7 @@ function DoubleClick(event) {
     startX = event.clientX;
     startY = event.clientY;
     inputPoint = new THREE.Vector2(startX, startY);
-    Raycast();
+    RaycastDblClick();
 }
 
 function Click() {
