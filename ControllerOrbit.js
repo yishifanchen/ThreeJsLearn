@@ -39,7 +39,7 @@ function Raycast() {
     raycaster.setFromCamera(mouse, cameraObject);
     intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
-        outlinePass.selectedObjects = intersects[0].object;
+        //outlinePass.selectedObjects = intersects[0].object;
         // intersects[0].object.material = new THREE.MeshPhongMaterial({
         //     color: 0xffffff * Math.random(),
         //     side: THREE.DoubleSide

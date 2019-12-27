@@ -76,15 +76,15 @@ function init() {
 
     renderer.setSize(useWidth,useHeight);
     renderer.setClearColor(0x2E9AFE,0.5);
-    //renderer.render(scene, camera);
+    renderer.render(scene, camera);
     document.body.appendChild(renderer.domElement);
-    OutLineInit();
+    //OutLineInit();
     animate();
     
 }
 function animate(){
     requestAnimationFrame(animate);
-    //renderer.render(scene, camera);
-    composer.render();
+    renderer.render(scene, camera);
+    //composer.render();
 }
 window.onload = init;
