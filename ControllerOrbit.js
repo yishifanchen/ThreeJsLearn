@@ -75,7 +75,7 @@ function update() {
     oldMouseRotation = mouseRotationDistance;
 
     followDistance -= mouseScrollDistance / 120;
-    followDistance = THREE.Math.clamp(followDistance, 1, 100);
+    followDistance = THREE.Math.clamp(followDistance, 1, 200);
     followTgtDistance = lerp(followTgtDistance, followDistance, 0.08);
 
     if (orbitView) { //按下鼠标左键

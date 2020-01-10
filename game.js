@@ -72,7 +72,7 @@ function init() {
 
     SetTargetCamera(mesh1,camera);
 
-    loadJS("model/丁堡河大桥2.rvt.js");
+    loadJS("model/高邮.rvt.js");
 
     renderer.setSize(useWidth,useHeight);
     renderer.setClearColor(0x2E9AFE,0.5);
